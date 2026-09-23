@@ -10,34 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .auth-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin: 0 0 1.25rem;
-    }
-    .auth-tab {
-      flex: 1;
-      border: 1px solid #d7d0c7;
-      background: transparent;
-      color: inherit;
-      border-radius: 0.6rem;
-      padding: 0.65rem 0.75rem;
-      cursor: pointer;
-      font: inherit;
-    }
-    .auth-tab.is-active {
-      background: #222;
-      color: #fff;
-      border-color: #222;
-    }
-    .auth-demo-warning {
-      margin-top: 1rem;
-      font-size: 0.78rem;
-      line-height: 1.45;
-      opacity: 0.7;
-    }
-  </style>
 </head>
 <body>
 
@@ -145,26 +117,31 @@
   </div>
 
   <!-- ===================== LOGIN / CREATE ACCOUNT MODAL ===================== -->
+  <!--
+    Phase 1 (current): demo authentication only, backed by localStorage.
+    Phase 2 (future): this modal's Login tab will be replaced or bypassed
+    by a redirect into a real OAuth 2.0 / OpenID Connect Identity Provider.
+    See the "AUTHENTICATION" sections in app.js for the abstraction this
+    UI talks to (AuthManager) so this markup does not need to change when
+    Phase 2 lands.
+  -->
   <div class="modal-overlay" id="loginModalOverlay" hidden>
     <div class="modal modal-narrow" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
-      <button class="modal-close" id="loginModalClose" type="button" aria-label="Close account form">&times;</button>
-
+      <button class="modal-close" id="loginModalClose" type="button" aria-label="Close login form">&times;</button>
       <div class="modal-body">
-        <h3 id="loginModalTitle">Welcome to ModernNest</h3>
-        <p class="modal-subtext" id="authModalSubtitle">
-          Log in to your account or create a new customer account.
+        <h3 id="loginModalTitle">Log in to your account</h3>
+        <p class="modal-subtext">
+          Phase 1 demo authentication — for local testing only. Accounts are
+          stored in this browser and will be replaced with real OAuth 2.0 /
+          OpenID Connect sign-in in Phase 2.
         </p>
 
-        <div class="auth-tabs" role="tablist" aria-label="Account options">
-          <button class="auth-tab is-active" id="loginTab" type="button" role="tab" aria-selected="true">
-            Login
-          </button>
-          <button class="auth-tab" id="registerTab" type="button" role="tab" aria-selected="false">
-            Create account
-          </button>
+        <div class="auth-tabs" role="tablist" aria-label="Login or create account" style="display:flex;gap:8px;margin-bottom:20px;">
+          <button class="btn btn-primary" id="tabLoginBtn" type="button" role="tab" aria-selected="true" aria-controls="loginForm" style="flex:1;">Login</button>
+          <button class="btn btn-outline" id="tabRegisterBtn" type="button" role="tab" aria-selected="false" aria-controls="registerForm" style="flex:1;">Create Account</button>
         </div>
 
-        <!-- Login form -->
+        <!-- LOGIN TAB -->
         <form id="loginForm" novalidate>
           <label for="customerId">Customer ID or Email</label>
           <input type="text" id="customerId" name="customerId" autocomplete="username" required>
@@ -176,24 +153,20 @@
           <p class="form-note" id="loginFormNote" role="status" aria-live="polite"></p>
         </form>
 
-        <!-- Create account form -->
+        <!-- CREATE ACCOUNT TAB -->
         <form id="registerForm" novalidate hidden>
           <label for="registerName">Full Name</label>
-          <input type="text" id="registerName" name="name" autocomplete="name" required>
+          <input type="text" id="registerName" name="registerName" autocomplete="name" required>
 
           <label for="registerEmail">Email</label>
-          <input type="email" id="registerEmail" name="email" autocomplete="email" required>
+          <input type="email" id="registerEmail" name="registerEmail" autocomplete="email" required>
 
           <label for="registerPassword">Password</label>
-          <input type="password" id="registerPassword" name="password" autocomplete="new-password" minlength="6" required>
+          <input type="password" id="registerPassword" name="registerPassword" autocomplete="new-password" required>
 
-          <button class="btn btn-primary btn-full" type="submit">Create account</button>
+          <button class="btn btn-primary btn-full" type="submit">Create Account</button>
           <p class="form-note" id="registerFormNote" role="status" aria-live="polite"></p>
         </form>
-
-        <p class="auth-demo-warning">
-          Demo only: Phase 1 stores the account in this browser. This is not OAuth 2.0 and must not be used for real customer passwords.
-        </p>
       </div>
     </div>
   </div>
